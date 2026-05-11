@@ -3,16 +3,20 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 
 const connectDB = require("./config/db");
+const authRoutes = require("./routes/authRoutes");
 
 dotenv.config();
 
 const app = express();
 
+connectDB();
+
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-connectDB();
+// Auth routes
+app.use("/api/auth", authRoutes);
 
 // Test route
 app.get("/", (req, res) => {
