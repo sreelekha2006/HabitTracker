@@ -29,7 +29,7 @@ function Register() {
   };
 
   return (
-    <div>
+    <div className="auth-box">
       <h2>Register</h2>
 
       <form onSubmit={handleSubmit}>
@@ -60,7 +60,7 @@ function Register() {
         <button type="submit">Register</button>
       </form>
 
-      <p>{message}</p>
+      <p className="message">{message}</p>
     </div>
   );
 }

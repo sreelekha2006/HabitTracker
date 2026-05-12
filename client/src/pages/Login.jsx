@@ -28,7 +28,6 @@ function Login() {
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      setMessage(res.data.message);
       navigate("/dashboard");
     } catch (error) {
       setMessage(error.response?.data?.message || "Something went wrong");
@@ -36,7 +35,7 @@ function Login() {
   };
 
   return (
-    <div>
+    <div className="auth-box">
       <h2>Login</h2>
 
       <form onSubmit={handleSubmit}>
@@ -59,7 +58,7 @@ function Login() {
         <button type="submit">Login</button>
       </form>
 
-      <p>{message}</p>
+      <p className="message">{message}</p>
     </div>
   );
 }

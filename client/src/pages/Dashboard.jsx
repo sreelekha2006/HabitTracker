@@ -1,4 +1,8 @@
 import { useEffect, useState } from "react";
+
+import Navbar from "../components/Navbar";
+import HabitCard from "../components/HabitCard";
+
 import {
   createHabit,
   getHabits,
@@ -36,6 +40,7 @@ function Dashboard() {
 
       setTitle("");
       setMessage("Habit added successfully");
+
       fetchHabits();
     } catch (error) {
       setMessage(error.response?.data?.message || "Failed to add habit");
@@ -46,6 +51,7 @@ function Dashboard() {
     try {
       await completeHabit(id);
       setMessage("Habit completed");
+
       fetchHabits();
     } catch (error) {
       setMessage(error.response?.data?.message || "Failed to complete habit");
@@ -56,6 +62,7 @@ function Dashboard() {
     try {
       await deleteHabit(id);
       setMessage("Habit deleted");
+
       fetchHabits();
     } catch (error) {
       setMessage("Failed to delete habit");
@@ -63,7 +70,9 @@ function Dashboard() {
   };
 
   return (
-    <div>
+    <div className="container">
+      <Navbar />
+
       <h2>Dashboard</h2>
 
       <form onSubmit={handleAddHabit}>
@@ -85,17 +94,12 @@ function Dashboard() {
         <p>No habits found</p>
       ) : (
         habits.map((habit) => (
-          <div key={habit._id}>
-            <h4>{habit.title}</h4>
-            <p>Streak: {habit.streak}</p>
-            <p>Longest Streak: {habit.longestStreak}</p>
-
-            <button onClick={() => handleComplete(habit._id)}>
-              Complete Today
-            </button>
-
-            <button onClick={() => handleDelete(habit._id)}>Delete</button>
-          </div>
+          <HabitCard
+            key={habit._id}
+            habit={habit}
+            onComplete={handleComplete}
+            onDelete={handleDelete}
+          />
         ))
       )}
     </div>
