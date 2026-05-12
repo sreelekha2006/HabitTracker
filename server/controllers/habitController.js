@@ -117,8 +117,80 @@ const completeHabit = async (req, res) => {
   }
 };
 
+// Update habit
+const updateHabit = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, description, frequency } = req.body;
+
+    const habit = await Habit.findById(id);
+
+    if (!habit) {
+      return res.status(404).json({
+        message: "Habit not found",
+      });
+    }
+
+    if (habit.user.toString() !== req.user._id.toString()) {
+      return res.status(401).json({
+        message: "Not authorized",
+      });
+    }
+
+    if (title !== undefined) habit.title = title;
+    if (description !== undefined) habit.description = description;
+    if (frequency !== undefined) habit.frequency = frequency;
+
+    const updatedHabit = await habit.save();
+
+    res.status(200).json({
+      message: "Habit updated successfully",
+      habit: updatedHabit,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Server Error",
+      error: error.message,
+    });
+  }
+};
+
+// Delete habit
+const deleteHabit = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const habit = await Habit.findById(id);
+
+    if (!habit) {
+      return res.status(404).json({
+        message: "Habit not found",
+      });
+    }
+
+    if (habit.user.toString() !== req.user._id.toString()) {
+      return res.status(401).json({
+        message: "Not authorized",
+      });
+    }
+
+    await habit.deleteOne();
+
+    res.status(200).json({
+      message: "Habit deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Server Error",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createHabit,
   getHabits,
   completeHabit,
+  updateHabit,
+  deleteHabit,
 };
