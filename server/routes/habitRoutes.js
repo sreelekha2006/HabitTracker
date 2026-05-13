@@ -5,6 +5,7 @@ const {
   getHabits,
   completeHabit,
   undoCompleteHabit,
+  toggleHabitDate,
   updateHabit,
   deleteHabit,
 } = require("../controllers/habitController");
@@ -18,6 +19,7 @@ router.get("/", protect, getHabits);
 
 router.put("/:id/complete", protect, completeHabit);
 router.put("/:id/undo-complete", protect, undoCompleteHabit);
+router.put("/:id/toggle-date", protect, toggleHabitDate);
 
 router.put("/:id", protect, updateHabit);
 router.delete("/:id", protect, deleteHabit);
