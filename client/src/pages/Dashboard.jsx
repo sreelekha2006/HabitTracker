@@ -18,6 +18,7 @@ import {
 function Dashboard() {
   const [habits, setHabits] = useState([]);
   const [title, setTitle] = useState("");
+  const [reminderTime, setReminderTime] = useState("");
   const [message, setMessage] = useState("");
 
   const fetchHabits = async () => {
@@ -41,9 +42,11 @@ function Dashboard() {
         title,
         description: "",
         frequency: "daily",
+        reminderTime,
       });
 
       setTitle("");
+      setReminderTime("");
       setMessage("Habit added successfully");
       fetchHabits();
     } catch (error) {
@@ -117,7 +120,7 @@ function Dashboard() {
   const totalPoints = habits.reduce((sum, habit) => sum + habit.streak * 10, 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f2e9ff] via-[#f8f5ff] to-[#ffeaf7] pb-12">
+    <div className="min-h-screen bg-gradient-to-br from-[#f2e9ff] via-[#f8f5ff] to-[#ffeaf7] pb-24">
       <Navbar />
 
       <main className="mx-auto mt-8 w-[94%] max-w-6xl">
@@ -172,6 +175,13 @@ function Dashboard() {
               onChange={(e) => setTitle(e.target.value)}
             />
 
+            <input
+              className="rounded-2xl border border-purple-100 bg-white px-5 py-4 outline-none focus:ring-4 focus:ring-purple-100"
+              type="time"
+              value={reminderTime}
+              onChange={(e) => setReminderTime(e.target.value)}
+            />
+
             <button className="rounded-2xl bg-gradient-to-r from-violet-500 to-pink-400 px-8 py-4 font-bold text-white shadow-lg shadow-purple-200 transition hover:scale-105">
               Add Habit
             </button>
@@ -210,7 +220,8 @@ function Dashboard() {
           )}
         </section>
       </main>
-     <MobileBottomNav /> 
+
+      <MobileBottomNav />
     </div>
   );
 }

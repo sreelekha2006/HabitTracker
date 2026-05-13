@@ -3,13 +3,21 @@ import { motion } from "framer-motion";
 
 import HabitCalendar from "./HabitCalendar";
 
-function HabitCard({ habit, onComplete, onUndoComplete, onToggleDate, onDelete, onUpdate }) {
+function HabitCard({
+  habit,
+  onComplete,
+  onUndoComplete,
+  onToggleDate,
+  onDelete,
+  onUpdate,
+}) {
   const [isEditing, setIsEditing] = useState(false);
 
   const [editData, setEditData] = useState({
     title: habit.title,
     description: habit.description,
     frequency: habit.frequency,
+    reminderTime: habit.reminderTime || "",
   });
 
   const points = habit.streak * 10;
@@ -75,6 +83,14 @@ function HabitCard({ habit, onComplete, onUndoComplete, onToggleDate, onDelete, 
             <option value="weekly">Weekly</option>
           </select>
 
+          <input
+            className="w-full rounded-2xl border border-purple-100 bg-white px-5 py-4 outline-none focus:ring-4 focus:ring-purple-100"
+            type="time"
+            name="reminderTime"
+            value={editData.reminderTime}
+            onChange={handleChange}
+          />
+
           <div className="flex gap-3">
             <button
               onClick={handleSave}
@@ -109,6 +125,14 @@ function HabitCard({ habit, onComplete, onUndoComplete, onToggleDate, onDelete, 
             </span>
           </div>
 
+          {habit.reminderTime && (
+            <div className="mb-5 rounded-3xl bg-violet-50 p-4">
+              <p className="font-bold text-violet-700">
+                ⏰ Reminder: {habit.reminderTime}
+              </p>
+            </div>
+          )}
+
           <div className="mb-5 grid grid-cols-2 gap-3">
             <div className="rounded-3xl bg-gradient-to-br from-violet-500 to-purple-400 p-4 text-white shadow-lg shadow-purple-200">
               <p className="text-sm opacity-80">Current Streak</p>
@@ -130,9 +154,9 @@ function HabitCard({ habit, onComplete, onUndoComplete, onToggleDate, onDelete, 
             </p>
           </div>
 
-          <HabitCalendar 
-          completedDates={habit.completedDates} 
-          onToggleDate={(date) => onToggleDate(habit._id, date)}
+          <HabitCalendar
+            completedDates={habit.completedDates}
+            onToggleDate={(date) => onToggleDate(habit._id, date)}
           />
 
           <div className="mt-5 flex flex-wrap gap-3">

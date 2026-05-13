@@ -26,6 +26,11 @@ const habitSchema = new mongoose.Schema(
       default: "daily",
     },
 
+    reminderTime: {
+      type: String,
+      default: "",
+    },
+
     completedDates: [
       {
         type: Date,

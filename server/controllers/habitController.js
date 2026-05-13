@@ -76,7 +76,12 @@ const recalculateStreaks = (completedDates) => {
 // Create habit
 const createHabit = async (req, res) => {
   try {
-    const { title, description, frequency } = req.body;
+    const {
+  title,
+  description,
+  frequency,
+  reminderTime,
+} = req.body;
 
     if (!title) {
       return res.status(400).json({
@@ -89,6 +94,7 @@ const createHabit = async (req, res) => {
       title,
       description,
       frequency,
+      reminderTime,
     });
 
     res.status(201).json({
@@ -294,7 +300,12 @@ const toggleHabitDate = async (req, res) => {
 const updateHabit = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, frequency } = req.body;
+    const {
+  title,
+  description,
+  frequency,
+  reminderTime,
+} = req.body;
 
     const habit = await Habit.findById(id);
 
@@ -313,6 +324,7 @@ const updateHabit = async (req, res) => {
     if (title !== undefined) habit.title = title;
     if (description !== undefined) habit.description = description;
     if (frequency !== undefined) habit.frequency = frequency;
+    if (reminderTime !== undefined) habit.reminderTime = reminderTime;
 
     const updatedHabit = await habit.save();
 
