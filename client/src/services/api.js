@@ -37,3 +37,11 @@ export const completeHabit = (id) => {
 export const deleteHabit = (id) => {
   return API.delete(`/habits/${id}`);
 };
+
+export const updateHabit = (id, habitData) => {
+  return API.put(`/habits/${id}`, habitData);
+};
+
+export const undoCompleteHabit = (id) => {
+  return API.put(`/habits/${id}/undo-complete`);
+};

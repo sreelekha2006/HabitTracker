@@ -187,10 +187,69 @@ const deleteHabit = async (req, res) => {
   }
 };
 
+// Undo today's completion
+const undoCompleteHabit = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const habit = await Habit.findById(id);
+
+    if (!habit) {
+      return res.status(404).json({
+        message: "Habit not found",
+      });
+    }
+
+    if (habit.user.toString() !== req.user._id.toString()) {
+      return res.status(401).json({
+        message: "Not authorized",
+      });
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const todayCompleted = habit.completedDates.some((date) => {
+      const completedDate = new Date(date);
+      completedDate.setHours(0, 0, 0, 0);
+
+      return completedDate.getTime() === today.getTime();
+    });
+
+    if (!todayCompleted) {
+      return res.status(400).json({
+        message: "Habit is not completed today",
+      });
+    }
+
+    habit.completedDates = habit.completedDates.filter((date) => {
+      const completedDate = new Date(date);
+      completedDate.setHours(0, 0, 0, 0);
+
+      return completedDate.getTime() !== today.getTime();
+    });
+
+    habit.streak = Math.max(0, habit.streak - 1);
+
+    await habit.save();
+
+    res.status(200).json({
+      message: "Today's completion removed",
+      habit,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Server Error",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createHabit,
   getHabits,
   completeHabit,
   updateHabit,
   deleteHabit,
+  undoCompleteHabit,
 };
