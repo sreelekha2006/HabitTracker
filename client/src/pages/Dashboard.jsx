@@ -15,6 +15,11 @@ import {
   updateHabit,
 } from "../services/api";
 
+import {
+  requestNotificationPermission,
+  showHabitNotification,
+} from "../services/notificationService";
+
 function Dashboard() {
   const [habits, setHabits] = useState([]);
   const [title, setTitle] = useState("");
@@ -33,6 +38,28 @@ function Dashboard() {
   useEffect(() => {
     fetchHabits();
   }, []);
+
+  useEffect(() => {
+    requestNotificationPermission();
+
+    const interval = setInterval(() => {
+      const now = new Date();
+      const currentTime = now.toTimeString().slice(0, 5);
+
+      habits.forEach((habit) => {
+        if (habit.reminderTime && habit.reminderTime === currentTime) {
+          const notificationKey = `${habit._id}-${currentTime}-${now.toDateString()}`;
+
+          if (!localStorage.getItem(notificationKey)) {
+            showHabitNotification(habit.title);
+            localStorage.setItem(notificationKey, "shown");
+          }
+        }
+      });
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, [habits]);
 
   const handleAddHabit = async (e) => {
     e.preventDefault();
@@ -120,7 +147,7 @@ function Dashboard() {
   const totalPoints = habits.reduce((sum, habit) => sum + habit.streak * 10, 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f2e9ff] via-[#f8f5ff] to-[#ffeaf7] pb-24">
+    <div className="min-h-screen bg-gradient-to-br from-[#f2e9ff] via-[#f8f5ff] to-[#ffeaf7] pb-24 dark:from-[#0f172a] dark:via-[#111827] dark:to-[#1e293b]">
       <Navbar />
 
       <main className="mx-auto mt-8 w-[94%] max-w-6xl">
@@ -128,38 +155,38 @@ function Dashboard() {
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mb-8 rounded-[2rem] bg-white/70 p-8 shadow-2xl shadow-purple-200/40 backdrop-blur-xl border border-white"
+          className="mb-8 rounded-[2rem] border border-white bg-white/70 p-8 shadow-2xl shadow-purple-200/40 backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/70 dark:shadow-slate-950/40"
         >
-          <h1 className="text-4xl font-extrabold text-slate-800">
+          <h1 className="text-4xl font-extrabold text-slate-800 dark:text-white">
             Your Habit Dashboard ✨
           </h1>
 
-          <p className="mt-2 text-slate-500">
+          <p className="mt-2 text-slate-500 dark:text-slate-300">
             Track routines, build streaks, and stay consistent every day.
           </p>
 
           <div className="mt-6 grid gap-4 md:grid-cols-3">
-            <div className="rounded-3xl bg-gradient-to-br from-violet-500 to-purple-400 p-5 text-white shadow-lg shadow-purple-200">
+            <div className="rounded-3xl bg-gradient-to-br from-violet-500 to-purple-400 p-5 text-white shadow-lg shadow-purple-200 dark:shadow-violet-950/40">
               <p className="text-sm opacity-80">Total Habits</p>
               <h2 className="mt-2 text-3xl font-extrabold">{totalHabits}</h2>
             </div>
 
-            <div className="rounded-3xl bg-gradient-to-br from-pink-400 to-rose-400 p-5 text-white shadow-lg shadow-pink-200">
+            <div className="rounded-3xl bg-gradient-to-br from-pink-400 to-rose-400 p-5 text-white shadow-lg shadow-pink-200 dark:shadow-pink-950/40">
               <p className="text-sm opacity-80">Completed Today</p>
               <h2 className="mt-2 text-3xl font-extrabold">
                 {completedToday}
               </h2>
             </div>
 
-            <div className="rounded-3xl bg-gradient-to-br from-indigo-400 to-sky-400 p-5 text-white shadow-lg shadow-indigo-200">
+            <div className="rounded-3xl bg-gradient-to-br from-indigo-400 to-sky-400 p-5 text-white shadow-lg shadow-indigo-200 dark:shadow-indigo-950/40">
               <p className="text-sm opacity-80">Total Points</p>
               <h2 className="mt-2 text-3xl font-extrabold">{totalPoints}</h2>
             </div>
           </div>
         </motion.section>
 
-        <section className="mb-8 rounded-[2rem] bg-white/75 p-6 shadow-xl shadow-purple-200/30 backdrop-blur-xl border border-white">
-          <h2 className="mb-4 text-2xl font-extrabold text-slate-800">
+        <section className="mb-8 rounded-[2rem] border border-white bg-white/75 p-6 shadow-xl shadow-purple-200/30 backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/70 dark:shadow-slate-950/40">
+          <h2 className="mb-4 text-2xl font-extrabold text-slate-800 dark:text-white">
             Add New Habit
           </h2>
 
@@ -168,7 +195,7 @@ function Dashboard() {
             className="flex flex-col gap-4 md:flex-row"
           >
             <input
-              className="flex-1 rounded-2xl border border-purple-100 bg-white px-5 py-4 outline-none focus:ring-4 focus:ring-purple-100"
+              className="flex-1 rounded-2xl border border-purple-100 bg-white px-5 py-4 outline-none focus:ring-4 focus:ring-purple-100 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-400 dark:focus:ring-violet-900"
               type="text"
               placeholder="Example: Drink water, Study DSA..."
               value={title}
@@ -176,30 +203,32 @@ function Dashboard() {
             />
 
             <input
-              className="rounded-2xl border border-purple-100 bg-white px-5 py-4 outline-none focus:ring-4 focus:ring-purple-100"
+              className="rounded-2xl border border-purple-100 bg-white px-5 py-4 outline-none focus:ring-4 focus:ring-purple-100 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:focus:ring-violet-900"
               type="time"
               value={reminderTime}
               onChange={(e) => setReminderTime(e.target.value)}
             />
 
-            <button className="rounded-2xl bg-gradient-to-r from-violet-500 to-pink-400 px-8 py-4 font-bold text-white shadow-lg shadow-purple-200 transition hover:scale-105">
+            <button className="rounded-2xl bg-gradient-to-r from-violet-500 to-pink-400 px-8 py-4 font-bold text-white shadow-lg shadow-purple-200 transition hover:scale-105 dark:shadow-violet-950/40">
               Add Habit
             </button>
           </form>
 
           {message && (
-            <p className="mt-4 font-semibold text-violet-600">{message}</p>
+            <p className="mt-4 font-semibold text-violet-600 dark:text-violet-300">
+              {message}
+            </p>
           )}
         </section>
 
         <section>
-          <h2 className="mb-4 text-2xl font-extrabold text-slate-800">
+          <h2 className="mb-4 text-2xl font-extrabold text-slate-800 dark:text-white">
             Your Habits
           </h2>
 
           {habits.length === 0 ? (
-            <div className="rounded-[2rem] bg-white/75 p-8 text-center shadow-xl shadow-purple-200/30 backdrop-blur-xl border border-white">
-              <p className="text-slate-500">
+            <div className="rounded-[2rem] border border-white bg-white/75 p-8 text-center shadow-xl shadow-purple-200/30 backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/70 dark:shadow-slate-950/40">
+              <p className="text-slate-500 dark:text-slate-300">
                 No habits yet. Add your first habit above.
               </p>
             </div>

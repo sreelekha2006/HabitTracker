@@ -7,7 +7,7 @@ import MobileBottomNav from "../components/MobileBottomNav";
 
 import { getHabits } from "../services/api";
 
-function Profile() {
+function Profile({ darkMode, setDarkMode }) {
   const [habits, setHabits] = useState([]);
 
   const navigate = useNavigate();
@@ -63,7 +63,7 @@ function Profile() {
       : "Beginner 🌱";
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f2e9ff] via-[#f8f5ff] to-[#ffeaf7] pb-24">
+    <div className="min-h-screen bg-gradient-to-br from-[#f2e9ff] via-[#f8f5ff] to-[#ffeaf7] pb-24 dark:from-[#0f172a] dark:via-[#111827] dark:to-[#1e293b]">
       <Navbar />
 
       <main className="mx-auto mt-8 w-[95%] max-w-6xl">
@@ -72,7 +72,7 @@ function Profile() {
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45 }}
-          className="rounded-[2rem] border border-white bg-white/75 p-8 shadow-2xl shadow-purple-200/40 backdrop-blur-xl"
+          className="rounded-[2rem] border border-white bg-white/75 p-8 shadow-2xl shadow-purple-200/40 backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/70 dark:shadow-slate-900/40"
         >
           <div className="flex flex-col items-center text-center">
             {/* AVATAR */}
@@ -80,11 +80,11 @@ function Profile() {
               {user?.name?.charAt(0)?.toUpperCase()}
             </div>
 
-            <h1 className="mt-6 text-4xl font-extrabold text-slate-800">
+            <h1 className="mt-6 text-4xl font-extrabold text-slate-800 dark:text-white">
               {user?.name}
             </h1>
 
-            <p className="mt-2 text-lg text-slate-500">
+            <p className="mt-2 text-lg text-slate-500 dark:text-slate-300">
               Productivity Enthusiast ✨
             </p>
 
@@ -129,12 +129,12 @@ function Profile() {
           </div>
 
           {/* SUMMARY */}
-          <div className="mt-10 rounded-[2rem] bg-gradient-to-r from-indigo-50 to-pink-50 p-8">
-            <h2 className="text-3xl font-extrabold text-slate-800">
+          <div className="mt-10 rounded-[2rem] bg-gradient-to-r from-indigo-50 to-pink-50 p-8 dark:from-slate-800 dark:to-slate-900">
+            <h2 className="text-3xl font-extrabold text-slate-800 dark:text-white">
               Your Progress Summary 📈
             </h2>
 
-            <p className="mt-4 text-lg leading-relaxed text-slate-600">
+            <p className="mt-4 text-lg leading-relaxed text-slate-600 dark:text-slate-300">
               You have completed{" "}
               <span className="font-bold text-violet-600">
                 {completedDays}
@@ -150,14 +150,24 @@ function Profile() {
               days.
             </p>
 
-            <p className="mt-4 text-slate-500">
+            <p className="mt-4 text-slate-500 dark:text-slate-400">
               Keep going consistently to unlock more achievements
               and improve your productivity journey.
             </p>
           </div>
 
-          {/* LOGOUT BUTTON */}
+          {/* THEME TOGGLE */}
           <div className="mt-10 flex justify-center">
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              className="rounded-2xl bg-gradient-to-r from-indigo-500 to-violet-500 px-8 py-4 font-bold text-white shadow-xl shadow-indigo-200 transition hover:scale-105"
+            >
+              {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
+            </button>
+          </div>
+
+          {/* LOGOUT BUTTON */}
+          <div className="mt-6 flex justify-center">
             <button
               onClick={handleLogout}
               className="rounded-2xl bg-gradient-to-r from-rose-400 to-pink-500 px-8 py-4 font-bold text-white shadow-xl shadow-pink-200 transition hover:scale-105"

@@ -3,7 +3,9 @@ function HabitCalendar({ completedDates = [], onToggleDate }) {
 
   for (let i = 13; i >= 0; i--) {
     const date = new Date();
+
     date.setDate(date.getDate() - i);
+
     date.setHours(0, 0, 0, 0);
 
     last14Days.push(date);
@@ -12,6 +14,7 @@ function HabitCalendar({ completedDates = [], onToggleDate }) {
   const isCompleted = (date) => {
     return completedDates.some((completedDate) => {
       const d = new Date(completedDate);
+
       d.setHours(0, 0, 0, 0);
 
       return d.getTime() === date.getTime();
@@ -21,9 +24,11 @@ function HabitCalendar({ completedDates = [], onToggleDate }) {
   return (
     <div className="mt-5">
       <div className="mb-3 flex items-center justify-between">
-        <h4 className="font-bold text-slate-700">Completion Calendar</h4>
+        <h4 className="font-bold text-slate-700 dark:text-slate-200">
+          Completion Calendar
+        </h4>
 
-        <span className="rounded-xl bg-violet-100 px-3 py-1 text-xs font-bold text-violet-700">
+        <span className="rounded-xl bg-violet-100 px-3 py-1 text-xs font-bold text-violet-700 dark:bg-violet-950/60 dark:text-violet-300">
           Last 14 Days
         </span>
       </div>
@@ -40,13 +45,16 @@ function HabitCalendar({ completedDates = [], onToggleDate }) {
               title={date.toDateString()}
               className={`flex h-14 w-14 flex-col items-center justify-center rounded-2xl text-xs font-bold transition hover:scale-110 ${
                 completed
-                  ? "bg-gradient-to-br from-violet-500 to-pink-400 text-white shadow-lg shadow-purple-200"
-                  : "bg-slate-100 text-slate-400"
+                  ? "bg-gradient-to-br from-violet-500 to-pink-400 text-white shadow-lg shadow-purple-200 dark:shadow-violet-950/40"
+                  : "bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-300"
               }`}
             >
               <span>
-                {date.toLocaleDateString("en-US", { weekday: "short" })}
+                {date.toLocaleDateString("en-US", {
+                  weekday: "short",
+                })}
               </span>
+
               <span>{date.getDate()}</span>
             </button>
           );

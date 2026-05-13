@@ -53,12 +53,12 @@ function HabitCard({
         y: -6,
         transition: { duration: 0.2 },
       }}
-      className="rounded-[2rem] border border-white bg-white/80 p-6 shadow-2xl shadow-purple-200/40 backdrop-blur-xl"
+      className="rounded-[2rem] border border-white bg-white/80 p-6 shadow-2xl shadow-purple-200/40 backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/75 dark:shadow-slate-950/50"
     >
       {isEditing ? (
         <div className="space-y-4">
           <input
-            className="w-full rounded-2xl border border-purple-100 bg-white px-5 py-4 outline-none focus:ring-4 focus:ring-purple-100"
+            className="w-full rounded-2xl border border-purple-100 bg-white px-5 py-4 outline-none focus:ring-4 focus:ring-purple-100 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-400 dark:focus:ring-violet-900"
             type="text"
             name="title"
             value={editData.title}
@@ -66,7 +66,7 @@ function HabitCard({
           />
 
           <input
-            className="w-full rounded-2xl border border-purple-100 bg-white px-5 py-4 outline-none focus:ring-4 focus:ring-purple-100"
+            className="w-full rounded-2xl border border-purple-100 bg-white px-5 py-4 outline-none focus:ring-4 focus:ring-purple-100 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-400 dark:focus:ring-violet-900"
             type="text"
             name="description"
             value={editData.description}
@@ -74,7 +74,7 @@ function HabitCard({
           />
 
           <select
-            className="w-full rounded-2xl border border-purple-100 bg-white px-5 py-4 outline-none focus:ring-4 focus:ring-purple-100"
+            className="w-full rounded-2xl border border-purple-100 bg-white px-5 py-4 outline-none focus:ring-4 focus:ring-purple-100 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:focus:ring-violet-900"
             name="frequency"
             value={editData.frequency}
             onChange={handleChange}
@@ -84,7 +84,7 @@ function HabitCard({
           </select>
 
           <input
-            className="w-full rounded-2xl border border-purple-100 bg-white px-5 py-4 outline-none focus:ring-4 focus:ring-purple-100"
+            className="w-full rounded-2xl border border-purple-100 bg-white px-5 py-4 outline-none focus:ring-4 focus:ring-purple-100 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:focus:ring-violet-900"
             type="time"
             name="reminderTime"
             value={editData.reminderTime}
@@ -94,14 +94,14 @@ function HabitCard({
           <div className="flex gap-3">
             <button
               onClick={handleSave}
-              className="flex-1 rounded-2xl bg-gradient-to-r from-violet-500 to-pink-400 py-3 font-bold text-white shadow-lg shadow-purple-200 transition hover:scale-105"
+              className="flex-1 rounded-2xl bg-gradient-to-r from-violet-500 to-pink-400 py-3 font-bold text-white shadow-lg shadow-purple-200 transition hover:scale-105 dark:shadow-violet-950/40"
             >
               Save
             </button>
 
             <button
               onClick={() => setIsEditing(false)}
-              className="flex-1 rounded-2xl bg-slate-200 py-3 font-bold text-slate-700 transition hover:scale-105"
+              className="flex-1 rounded-2xl bg-slate-200 py-3 font-bold text-slate-700 transition hover:scale-105 dark:bg-slate-800 dark:text-slate-200"
             >
               Cancel
             </button>
@@ -111,35 +111,35 @@ function HabitCard({
         <>
           <div className="mb-5 flex items-start justify-between gap-3">
             <div>
-              <h3 className="text-2xl font-extrabold text-slate-800">
+              <h3 className="text-2xl font-extrabold text-slate-800 dark:text-white">
                 {habit.title}
               </h3>
 
-              <p className="mt-1 text-slate-500">
+              <p className="mt-1 text-slate-500 dark:text-slate-300">
                 {habit.description || "No description added"}
               </p>
             </div>
 
-            <span className="rounded-2xl bg-violet-100 px-4 py-2 text-sm font-bold text-violet-700">
+            <span className="rounded-2xl bg-violet-100 px-4 py-2 text-sm font-bold text-violet-700 dark:bg-violet-950/60 dark:text-violet-300">
               {habit.frequency}
             </span>
           </div>
 
           {habit.reminderTime && (
-            <div className="mb-5 rounded-3xl bg-violet-50 p-4">
-              <p className="font-bold text-violet-700">
+            <div className="mb-5 rounded-3xl bg-violet-50 p-4 dark:bg-slate-800">
+              <p className="font-bold text-violet-700 dark:text-violet-300">
                 ⏰ Reminder: {habit.reminderTime}
               </p>
             </div>
           )}
 
           <div className="mb-5 grid grid-cols-2 gap-3">
-            <div className="rounded-3xl bg-gradient-to-br from-violet-500 to-purple-400 p-4 text-white shadow-lg shadow-purple-200">
+            <div className="rounded-3xl bg-gradient-to-br from-violet-500 to-purple-400 p-4 text-white shadow-lg shadow-purple-200 dark:shadow-violet-950/40">
               <p className="text-sm opacity-80">Current Streak</p>
               <h4 className="text-3xl font-extrabold">{habit.streak}</h4>
             </div>
 
-            <div className="rounded-3xl bg-gradient-to-br from-pink-400 to-rose-400 p-4 text-white shadow-lg shadow-pink-200">
+            <div className="rounded-3xl bg-gradient-to-br from-pink-400 to-rose-400 p-4 text-white shadow-lg shadow-pink-200 dark:shadow-pink-950/40">
               <p className="text-sm opacity-80">Longest</p>
               <h4 className="text-3xl font-extrabold">
                 {habit.longestStreak}
@@ -147,9 +147,11 @@ function HabitCard({
             </div>
           </div>
 
-          <div className="mb-5 rounded-3xl bg-gradient-to-r from-indigo-50 to-pink-50 p-4">
-            <p className="font-bold text-slate-700">🏆 {badge}</p>
-            <p className="mt-1 text-sm text-slate-500">
+          <div className="mb-5 rounded-3xl bg-gradient-to-r from-indigo-50 to-pink-50 p-4 dark:from-slate-800 dark:to-slate-800">
+            <p className="font-bold text-slate-700 dark:text-slate-200">
+              🏆 {badge}
+            </p>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
               Points earned: {points}
             </p>
           </div>
@@ -162,28 +164,28 @@ function HabitCard({
           <div className="mt-5 flex flex-wrap gap-3">
             <button
               onClick={() => onComplete(habit._id)}
-              className="flex-1 rounded-2xl bg-gradient-to-r from-violet-500 to-pink-400 px-4 py-3 font-bold text-white shadow-lg shadow-purple-200 transition hover:scale-105"
+              className="flex-1 rounded-2xl bg-gradient-to-r from-violet-500 to-pink-400 px-4 py-3 font-bold text-white shadow-lg shadow-purple-200 transition hover:scale-105 dark:shadow-violet-950/40"
             >
               Complete Today
             </button>
 
             <button
               onClick={() => onUndoComplete(habit._id)}
-              className="rounded-2xl bg-amber-100 px-5 py-3 font-bold text-amber-700 transition hover:bg-amber-200"
+              className="rounded-2xl bg-amber-100 px-5 py-3 font-bold text-amber-700 transition hover:bg-amber-200 dark:bg-amber-950/50 dark:text-amber-300 dark:hover:bg-amber-900"
             >
               Undo Today
             </button>
 
             <button
               onClick={() => setIsEditing(true)}
-              className="rounded-2xl bg-violet-100 px-5 py-3 font-bold text-violet-700 transition hover:bg-violet-200"
+              className="rounded-2xl bg-violet-100 px-5 py-3 font-bold text-violet-700 transition hover:bg-violet-200 dark:bg-violet-950/60 dark:text-violet-300 dark:hover:bg-violet-900"
             >
               Edit
             </button>
 
             <button
               onClick={() => onDelete(habit._id)}
-              className="rounded-2xl bg-rose-100 px-5 py-3 font-bold text-rose-600 transition hover:bg-rose-200"
+              className="rounded-2xl bg-rose-100 px-5 py-3 font-bold text-rose-600 transition hover:bg-rose-200 dark:bg-rose-950/60 dark:text-rose-300 dark:hover:bg-rose-900"
             >
               Delete
             </button>
