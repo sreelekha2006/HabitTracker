@@ -1,57 +1,54 @@
-function HabitCalendar({ completedDates = [] }) {
-  const last7Days = [];
+function HabitCalendar({ completedDates = [], onToggleDate }) {
+  const last14Days = [];
 
-  for (let i = 6; i >= 0; i--) {
+  for (let i = 13; i >= 0; i--) {
     const date = new Date();
     date.setDate(date.getDate() - i);
+    date.setHours(0, 0, 0, 0);
 
-    last7Days.push(new Date(date));
+    last14Days.push(date);
   }
 
   const isCompleted = (date) => {
     return completedDates.some((completedDate) => {
-      const d1 = new Date(completedDate);
-      return d1.toDateString() === date.toDateString();
+      const d = new Date(completedDate);
+      d.setHours(0, 0, 0, 0);
+
+      return d.getTime() === date.getTime();
     });
   };
 
   return (
     <div className="mt-5">
       <div className="mb-3 flex items-center justify-between">
-        <h4 className="font-bold text-slate-700">Weekly Progress</h4>
+        <h4 className="font-bold text-slate-700">Completion Calendar</h4>
 
         <span className="rounded-xl bg-violet-100 px-3 py-1 text-xs font-bold text-violet-700">
-          Last 7 Days
+          Last 14 Days
         </span>
       </div>
 
-      <div className="flex items-center gap-3">
-        {last7Days.map((date, index) => {
+      <div className="flex flex-wrap gap-3">
+        {last14Days.map((date, index) => {
           const completed = isCompleted(date);
 
           return (
-            <div
+            <button
               key={index}
-              className="flex flex-col items-center gap-2"
+              type="button"
+              onClick={() => onToggleDate(date)}
+              title={date.toDateString()}
+              className={`flex h-14 w-14 flex-col items-center justify-center rounded-2xl text-xs font-bold transition hover:scale-110 ${
+                completed
+                  ? "bg-gradient-to-br from-violet-500 to-pink-400 text-white shadow-lg shadow-purple-200"
+                  : "bg-slate-100 text-slate-400"
+              }`}
             >
-              <span className="text-xs font-semibold text-slate-400">
-                {date.toLocaleDateString("en-US", {
-                  weekday: "short",
-                })}
+              <span>
+                {date.toLocaleDateString("en-US", { weekday: "short" })}
               </span>
-
-              <div
-                className={`h-12 w-12 rounded-2xl transition-all duration-300 hover:scale-110 ${
-                  completed
-                    ? "bg-gradient-to-br from-violet-500 to-pink-400 shadow-lg shadow-purple-200"
-                    : "bg-slate-100"
-                }`}
-              >
-                <div className="flex h-full items-center justify-center text-lg">
-                  {completed ? "✓" : ""}
-                </div>
-              </div>
-            </div>
+              <span>{date.getDate()}</span>
+            </button>
           );
         })}
       </div>

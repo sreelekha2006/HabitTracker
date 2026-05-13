@@ -45,3 +45,7 @@ export const updateHabit = (id, habitData) => {
 export const undoCompleteHabit = (id) => {
   return API.put(`/habits/${id}/undo-complete`);
 };
+
+export const toggleHabitDate = (id, date) => {
+  return API.put(`/habits/${id}/toggle-date`, { date });
+};

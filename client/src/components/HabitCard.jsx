@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 import HabitCalendar from "./HabitCalendar";
 
-function HabitCard({ habit, onComplete, onUndoComplete, onDelete, onUpdate }) {
+function HabitCard({ habit, onComplete, onUndoComplete, onToggleDate, onDelete, onUpdate }) {
   const [isEditing, setIsEditing] = useState(false);
 
   const [editData, setEditData] = useState({
@@ -130,7 +130,10 @@ function HabitCard({ habit, onComplete, onUndoComplete, onDelete, onUpdate }) {
             </p>
           </div>
 
-          <HabitCalendar completedDates={habit.completedDates} />
+          <HabitCalendar 
+          completedDates={habit.completedDates} 
+          onToggleDate={(date) => onToggleDate(habit._id, date)}
+          />
 
           <div className="mt-5 flex flex-wrap gap-3">
             <button

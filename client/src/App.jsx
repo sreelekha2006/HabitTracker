@@ -4,20 +4,42 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Analytics from "./pages/Analytics";
+import Calendar from "./pages/Calendar";
+import Achievements from "./pages/Achievements";
+import Profile from "./pages/Profile";
+
 import ProtectedRoute from "./components/ProtectedRoute";
+import PageTransition from "./components/PageTransition";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route
+          path="/"
+          element={
+            <PageTransition>
+              <Login />
+            </PageTransition>
+          }
+        />
+
+        <Route
+          path="/register"
+          element={
+            <PageTransition>
+              <Register />
+            </PageTransition>
+          }
+        />
 
         <Route
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <PageTransition>
+                <Dashboard />
+              </PageTransition>
             </ProtectedRoute>
           }
         />
@@ -26,7 +48,42 @@ function App() {
           path="/analytics"
           element={
             <ProtectedRoute>
-              <Analytics />
+              <PageTransition>
+                <Analytics />
+              </PageTransition>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/calendar"
+          element={
+            <ProtectedRoute>
+              <PageTransition>
+                <Calendar />
+              </PageTransition>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/achievements"
+          element={
+            <ProtectedRoute>
+              <PageTransition>
+                <Achievements />
+              </PageTransition>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <PageTransition>
+                <Profile />
+              </PageTransition>
             </ProtectedRoute>
           }
         />

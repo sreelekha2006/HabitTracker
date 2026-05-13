@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 
 import { getHabits } from "../services/api";
+import MobileBottomNav from "../components/MobileBottomNav";
 
 import {
   BarChart,
@@ -132,6 +133,7 @@ function Analytics() {
           </div>
         </section>
       </main>
+      <MobileBottomNav />
     </div>
   );
 }

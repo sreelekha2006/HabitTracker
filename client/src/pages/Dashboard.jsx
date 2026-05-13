@@ -3,12 +3,14 @@ import { motion } from "framer-motion";
 
 import Navbar from "../components/Navbar";
 import HabitCard from "../components/HabitCard";
+import MobileBottomNav from "../components/MobileBottomNav";
 
 import {
   createHabit,
   getHabits,
   completeHabit,
   undoCompleteHabit,
+  toggleHabitDate,
   deleteHabit,
   updateHabit,
 } from "../services/api";
@@ -66,6 +68,16 @@ function Dashboard() {
       fetchHabits();
     } catch (error) {
       setMessage(error.response?.data?.message || "Failed to undo completion");
+    }
+  };
+
+  const handleToggleDate = async (id, date) => {
+    try {
+      await toggleHabitDate(id, date);
+      setMessage("Selected date updated");
+      fetchHabits();
+    } catch (error) {
+      setMessage(error.response?.data?.message || "Failed to update date");
     }
   };
 
@@ -189,6 +201,7 @@ function Dashboard() {
                   habit={habit}
                   onComplete={handleComplete}
                   onUndoComplete={handleUndoComplete}
+                  onToggleDate={handleToggleDate}
                   onDelete={handleDelete}
                   onUpdate={handleUpdate}
                 />
@@ -197,6 +210,7 @@ function Dashboard() {
           )}
         </section>
       </main>
+     <MobileBottomNav /> 
     </div>
   );
 }
